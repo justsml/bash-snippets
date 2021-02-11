@@ -32,26 +32,28 @@ PATH="$(removePath "$rubyPath")"
 
 ```bash
 
-# `removePath [path]` Outputs the $PATH omitting all occurences of the specified path.
+# `removePath [path]` - Outputs the $PATH omitting all occurences of the specified path.
 function removePath () {
-  # Check matches in middle of path
+  if [[ "$1" == "" ]]; then
+    printf "$PATH"
+    return
+  fi
   tmpPath="$PATH"
   if [[ "$PATH" == *":$1:"* ]]; then
-    echo 'matched PATH middle'
+    # matched PATH middle
     tmpPath="${tmpPath//:$1:/:}"
   fi
-  # Test start of path
   if [[ "$PATH" == "$1:"* ]]; then
-    echo 'matched PATH start'
+    # matched PATH start
     tmpPath="${tmpPath//:$1/}"
   fi
-  # Test end of path
   if [[ "$PATH" == *":$1" ]]; then
-    echo 'matched PATH end'
+    # matched PATH end
     tmpPath="${tmpPath//:$1/}"
   fi
   tmpPath="${tmpPath//::/:}"
   printf "$tmpPath"
+  return
 }
 ```
 
